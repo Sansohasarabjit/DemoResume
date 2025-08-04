@@ -56,7 +56,7 @@
             color: #85c1e9; /* Lighter blue for links */
         }
 
-        body.dark-mode .back-to-top, body.dark-mode .theme-toggle-btn {
+        body.dark-mode .back-to-top {
             background-color: #5d4a66;
             color: #ecf0f1;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
@@ -307,31 +307,8 @@
             transform: translateY(-3px);
         }
 
-        /* Theme Toggle Button */
-        .theme-toggle-btn {
-            position: fixed;
-            bottom: 30px;
-            left: 30px;
-            background-color: #5d4a66;
-            color: white;
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 1.5em;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            z-index: 999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .theme-toggle-btn:hover {
-            background-color: #7a5e8a;
-            transform: translateY(-3px);
-        }
+        /* Theme Toggle Button - REMOVED */
+        /* .theme-toggle-btn { ... } */
 
         /* Responsive Design */
         @media (max-width: 768px) {
@@ -346,18 +323,14 @@
             .navbar li {
                 margin: 10px 0;
             }
-            .back-to-top, .theme-toggle-btn {
+            .back-to-top {
                 width: 40px;
                 height: 40px;
                 font-size: 1.2em;
                 bottom: 20px;
                 right: 20px;
-                left: 20px;
             }
-            .theme-toggle-btn {
-                left: 20px;
-                bottom: 80px; /* Adjust position to not overlap with back-to-top */
-            }
+            /* .theme-toggle-btn positioning adjusted for removal */
         }
     </style>
 </head>
@@ -487,13 +460,14 @@
             <li><a href="./Profit_Hunter_v1.0.exe" download="Profit_Hunter_v1.0.exe">Profit Hunter (.exe file)</a></li>
             <li><a href="./key.txt" download="key.txt">Profit Hunter (.txt file)</a></li>
             <li><a href="./final_analysis.xlsb" download="final_analysis.xlsb">Profit Hunter (.xlsb file)</a></li>
+            <li><a href="./fno.xlsx" download="fno.xlsx">Profit Hunter (.xlsx file)</a></li>
         </ul>
         <!-- End Updated Downloads Section -->
 
     </div>
 
     <button class="back-to-top" id="backToTopBtn">↑</button>
-    <button class="theme-toggle-btn" id="themeToggleBtn">💡</button>
+    <!-- Theme Toggle Button Removed -->
 
     <script>
         // Smooth Scrolling for Navigation
@@ -524,29 +498,24 @@
             });
         });
 
-        // Theme Toggle (Light/Dark Mode)
-        const themeToggleBtn = document.getElementById('themeToggleBtn');
-        const body = document.body;
-        const storedTheme = localStorage.getItem('theme');
+        // Automatic Theme Adjustment (Dark Mode based on local time)
+        function setTimeBasedTheme() {
+            const currentHour = new Date().getHours();
+            const body = document.body;
 
-        // Apply stored theme on load
-        if (storedTheme === 'dark') {
-            body.classList.add('dark-mode');
-            themeToggleBtn.textContent = '☀️'; // Sun icon for dark mode
-        } else {
-            themeToggleBtn.textContent = '💡'; // Lightbulb icon for light mode
+            // Dark mode from 6 PM (18:00) to 9 AM (9:00)
+            if (currentHour >= 18 || currentHour < 9) {
+                body.classList.add('dark-mode');
+            } else {
+                body.classList.remove('dark-mode');
+            }
         }
 
-        themeToggleBtn.addEventListener('click', () => {
-            body.classList.toggle('dark-mode');
-            if (body.classList.contains('dark-mode')) {
-                localStorage.setItem('theme', 'dark');
-                themeToggleBtn.textContent = '☀️'; // Change to sun icon
-            } else {
-                localStorage.setItem('theme', 'light');
-                themeToggleBtn.textContent = '💡'; // Change to lightbulb icon
-            }
-        });
+        // Call the function when the page loads
+        setTimeBasedTheme();
+
+        // Optionally, call it every minute to update theme if user stays on page across time boundary
+        // setInterval(setTimeBasedTheme, 60 * 1000); // Every minute
 
         // Contact Form Submission Feedback
         const messageForm = document.getElementById('messageForm');
@@ -570,4 +539,3 @@
     </script>
 </body>
 </html>
-
